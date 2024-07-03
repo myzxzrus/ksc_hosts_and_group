@@ -5,5 +5,11 @@ if __name__ == '__main__':
     t = KSCHosts(ksc_server="https://10.2.111.88", user='test_user', password='888888')
     group = t.get_group()
     print(group)
-    hosts = t.get_hosts(0)
+
+    #  Получение всех хостов по всем группам.
+    hosts = t.get_hosts()
+    print(hosts)
+
+    #  Получение хостов по определенной группе. Необходимо передать group_id
+    hosts = t.get_hosts(group_id=0)
     print(hosts)

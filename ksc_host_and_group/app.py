@@ -118,15 +118,15 @@ class KSCHosts:
         return self._get_items(str_accessor)
 
 
-    def get_hosts(self, group_id: Union[int, None] = None) -> list:
+    def get_hosts(self, **kwargs) -> list:
         """
         Возвращает список хостов \n
-        Принимает необязательный параметр group_id, для поиска по определенной группе,
+        Принимает необязательный именованный параметр group_id, для поиска по определенной группе,
         иначе будет выполнен поиск по всем группам.
         """
         hosts_list = []
-        if group_id is not None:
-            groups = [{'value': {'id': group_id}}]
+        if 'group_id' in kwargs:
+            groups = [{'value': {'id': kwargs['group_id']}}]
         else:
             groups = self.get_group()
         for group in groups:
