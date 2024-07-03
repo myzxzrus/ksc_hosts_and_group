@@ -35,18 +35,18 @@ def convert_base64(text: str, encode: str = 'utf-8', decode: str = 'utf-8'):
 
 class KSCHosts:
     """
-    Получение списка всех хостов. \n
+    Получение списка хостов и групg из Kaspersky Security Center API. \n
     Обязательные именованные параметры: \n
-        ksc_server: str \n
-        user: str \n
-        password: str \n
+        :ksc_server: str \n
+        :user: str \n
+        :password: str \n
     Необязательные атрибуты: \n
-        port: int = 13299 \n
-        url: str = {ksc_server}:{port}/api/v1.0 \n
+        :port: int По умолчанию 13299 \n
+        :url: str По умолчанию {ksc_server}:{port}/api/v1.0 \n
 
     Публичные методы:
-        get_group - Получение списка груп
-        get_hosts - Получение списка хостов
+        get_group() - Получение списка групп
+        get_hosts() - Получение списка хостов
     """
 
     def __init__(self, **kwargs):
@@ -77,7 +77,10 @@ class KSCHosts:
         else:
             raise AuthenticationFailedError
 
-    def _get_str_accessor(self):
+    def _get_str_accessor(self) -> str:
+        """
+        :return: str
+        """
         url = f'{self.url}/HostGroup.FindGroups'
         common_headers = {
             'Content-Type': 'application/json',
@@ -90,6 +93,10 @@ class KSCHosts:
         return strAccessor
 
     def _get_items(self, str_accessor) -> list:
+        """
+        :param str_accessor:
+        :return: list
+        """
         url = f'{self.url}/ChunkAccessor.GetItemsCount'
         common_headers = {
             'Content-Type': 'application/json',
@@ -112,8 +119,11 @@ class KSCHosts:
         return results
 
 
-    def get_group(self):
-        """Возвращает список групп"""
+    def get_group(self) -> list:
+        """
+        Возвращает список групп.
+        :return: list
+        """
         str_accessor = self._get_str_accessor()
         return self._get_items(str_accessor)
 
@@ -123,6 +133,9 @@ class KSCHosts:
         Возвращает список хостов \n
         Принимает необязательный именованный параметр group_id, для поиска по определенной группе,
         иначе будет выполнен поиск по всем группам.
+
+        :param kwargs:
+        :return:
         """
         hosts_list = []
         if 'group_id' in kwargs:
